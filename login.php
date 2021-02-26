@@ -1,57 +1,40 @@
 <?php
 
-session_start();
-if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] ===true){
-    header("location:diagnosis.php");
-    exit;
-}
-require_once "config.php";
+require_once "classes/DbFunctions.php";
 
+$execute= new dbFunction();
 $username=$password="";
 $username_err=$password_err="";
 
-if($_SERVER["REQUEST_METHOD"]=="POST"){
-    if(empty(trim($_POST["username"]))){
+if(isset($_POST['login'])){
+    extract($_POST);
+    if(empty(trim($username))){
         $username_err= "Please enter username.";
     }else{
-        $username=trim($_POST["username"]);
+        $username=trim($username);
     }
-    if(empty(trim($_POST["password"]))){
+    if(empty(trim($password))){
         $password_err="Please enter your password.";
     }else{
-        $password=trim($_POST["password"]);
+        $password=trim($password);
     }
     if(empty($username_err) && empty($password_err)){
-        $sql= "SELECT id, username, password FROM users WHERE username=?";
-        if($stmt=mysqli_prepare($link, $sql)){
-             mysqli_stmt_bind_param($stmt,"s",$param_username);
-             $param_username=$username;
-             if(mysqli_stmt_execute($stmt)){
-                 mysqli_stmt_store_result($stmt);
-            if(mysqli_stmt_num_rows($stmt)==1){
-                mysqli_stmt_bind_result($stmt, $id, $username, $hashed_password);
-                if(mysqli_stmt_fetch($stmt)){
-                    if(password_verify($password, $hashed_password)){
-                        session_start();
-                        $SESSION["loggedin"]=true;
-                        $SESSION["id"]= $id;
-                        $SESSION["username"]= $username;
-
-                    header("location:home.html");
-                    }else{
-                        $password_err="Invalid password";
-                    }
-                }
-            }else{
-                $username_err="Username does not exist.";
+        $encrypt_password=md5($password);
+        $login=$execute->select('user_data',"Where username='$username' && password='$encrypt_password'");
+        if($login==true){
+            $usertype=$login[0]['user_type'];
+            if($usertype==1){
+                header('Location:services.php');
+            }elseif($usertype==11){
+                header('Location:mechanic.php');
+            }elseif($usertype==111){
+                header('Location:admin.php');
             }
-             }else{
-                 echo "Oops something went wrong.Try again later.";
-             }
-             mysqli_stmt_close($stmt);
+        }else{
+            echo "<script>window.alert('Try again')</script>";
+        }
+             
     }
-}
-            mysqli_close($link);
 }
 ?>
 
@@ -67,7 +50,7 @@ if($_SERVER["REQUEST_METHOD"]=="POST"){
     <div class="wrapper">
     <h2>Login</h2>
     <p>Please fill in your credentials to login.</p>
-        <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post">
+        <form action="" method="post">
         <div class="form-group<?php echo(!empty($username_err))? 'has-error': '';?>">
             <label>Username</label>
             <input type="text" name="username" class="form-control" value="<?php echo $username; ?>">
@@ -79,7 +62,7 @@ if($_SERVER["REQUEST_METHOD"]=="POST"){
             <span class="help-block"><?php echo $password_err; ?></span>
             </div>
         <div class="form-group">
-        <input type="submit" class="btn btn-primary" value="Login">
+        <input type="submit" class="btn btn-primary" name="login" value="Login">
         </div>
         <p>Don't have an account? <a href="register.php">Sign up now</a>.</p>
         </form>

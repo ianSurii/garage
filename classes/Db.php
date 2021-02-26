@@ -3,7 +3,7 @@ session_start();
 define('servername','localhost');
 define('username','root');
 define('password','');
-define('dbname','happyfarmer');
+define('dbname','clarris');
 class db{
     function __construct(){
 		$this->connection = new mysqli(servername, username,password,dbname);

@@ -1,61 +1,94 @@
 <?php
 require_once "config.php";
+include 'classes/DbFunctions.php';
+$execute=new dbFunction();
 
-$username=$password=$confirm_password="";
+$username_input=$password=$confirm_password=$usertype="";
 $username_err=$password_err=$confirm_password_err="";
+$user_type_err="";
 
-if($_SERVER["REQUEST_METHOD"]=="POST"){
-    if(empty(trim($_POST["username"]))){
+if(isset($_POST['register'])){
+    extract($_POST);
+    if(empty(trim($username))){
         $username_err="Please enter a username";
     }else{
-        $sql="SELECT id FROM users WHERE username=?";
-        if($stmt=mysqli_prepare($link, $sql)){
-            mysqli_stmt_bind_param($stmt,"s",$param_username);
-            $param_username=trim($_POST["username"]);
-            if(mysqli_stmt_execute($stmt)){
-                mysqli_stmt_store_result($stmt);
-            if(mysqli_stmt_num_rows($stmt)==1){
+     $check_availability=$execute->select('user_data',"where username='$username'");
+
+        
+            if($check_availability==true){
+               
+           
                 $username_err="This username is already taken";
             }else{
-                $username=trim($_POST["username"]);
-            }
-            }else{
-                echo"Oops!Something went wrong.Try again";
-            }
-            mysqli_stmt_close($stmt);
+                $username_input=$username;
+            
+            
+           
         }
     }
-    if(empty(trim($_POST["password"]))){
+    // if(empty(trim($_POST['usertype']))){
+
+    //     $user_type_err="Select one";
+    // }else{
+        
+        
+       
+    // }
+    if(empty(trim($password))){
         $password_err="Please enter a password";
 
-    }elseif(strlen(trim($_POST["password"]))<6){
+    }elseif(strlen(trim($password))<6){
         $password_err="Password must have at least six characters.";
     }else{
-        $password=trim($_POST["password"]);
+        $password=trim($password);
     }
-    if(empty(trim($_POST["confirm_password"]))){
+    if(empty(trim($confirm_password))){
         $confirm_password_err="Please confirm password";
     }else{
-        $confirm_password=trim($_POST["confirm_password"]);
+        $confirm_password=trim($confirm_password);
         if(empty($password_err)&&($password !=$confirm_password)){
             $confirm_password_err="Password does not match.";
         }
     }
-    if(empty($username_err)&& empty($password_err)&& empty($confirm_password_err)){
-        $sql="INSERT INTO users(username, password)
-        VALUES(?,?)";
-        if($stmt=mysqli_prepare($link,$sql)){
-            mysqli_stmt_bind_param($stmt,"ss",$param_username,$param_password);
+    if(empty($username_err)&& empty($password_err)&& empty($confirm_password_err) && empty($usertype_err)){
+        // extract($_POST);
+        
+        if($usertype=="Admin"){
+            $usertype_value=111;
 
-            $param_username=$username;
-            $param_password= password_hash($password,PASSWORD_DEFAULT);
+        }elseif($usertype=="Mechanic"){
+            $usertype_value=11;
 
-            if(mysqli_stmt_execute($stmt)){
-                header("location: login.php");
-            }else{
-                echo"Something went wrong.Try again.";
-            }mysqli_stmt_close($stmt);
-        }    
+        }else{
+            $usertype_value=1;
+        }
+        $table="user_data";
+        $column="username,password,user_type";
+        $encrypted_password=md5($password);
+        $values="'$username','$encrypted_password','$usertype_value'";
+        $register=$execute->insert($table,$column,$values);
+        if($register==true){
+            header('Location:login.php');
+        }
+        else{
+            echo "<script>window.alert('Try again')</script>";
+        }
+
+
+        // $sql="INSERT INTO users(username, password)
+        // VALUES(?,?)";
+        // if($stmt=mysqli_prepare($link,$sql)){
+        //     mysqli_stmt_bind_param($stmt,"ss",$param_username,$param_password);
+
+        //     $param_username=$username;
+        //     $param_password= password_hash($password,PASSWORD_DEFAULT);
+
+        //     if(mysqli_stmt_execute($stmt)){
+        //         header("location: login.php");
+        //     }else{
+        //         echo"Something went wrong.Try again.";
+        //     }mysqli_stmt_close($stmt);
+        // }    
 
     }
     mysqli_close($link);
@@ -77,16 +110,16 @@ if($_SERVER["REQUEST_METHOD"]=="POST"){
         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post">
         <div class="form-group<?php echo(!empty($username_err))? 'has-error': '';?>">
             <label>Username</label>
-            <input type="text" name="username" class="form-control" value="<?php echo $username; ?>">
+            <input type="text" name="username" class="form-control" value="<?php echo $username_input; ?>">
             <span class="help-block"><?php echo $username_err; ?></span>
             </div>
             <div class="form-group<?php echo(!empty($confirm_password_err))? 'has-error': '';?>">
             <label>Select User Type</label>
-            <select type="password" name="confirm_password" class="form-control" value="<?php echo $confirm_password; ?>">
-            <span class="help-block"><?php echo $confirm_password_err; ?></span>
-            <option value='--.--' selected='selected'>Admin</option>
-            <option value='--.--' selected='selected'>Mechanic</option>
-            <option value='--.--' selected='selected'>Client</option>
+            <select type="password" name="usertype" class="form-control" value="<?php echo $usertype; ?>">
+            <span class="help-block"><?php echo $usertype_err; ?></span>
+            <option value="Admin" selected='selected'>Admin</option>
+            <option value="Mechanic" selected='selected'>Mechanic</option>
+            <option value="Client" selected='selected'>Client</option>
             </select>
             </div>
         <div class="form-group<?php echo(!empty($password_err))? 'has-error': '';?>">
@@ -101,7 +134,7 @@ if($_SERVER["REQUEST_METHOD"]=="POST"){
             <span class="help-block"><?php echo $confirm_password_err; ?></span>
             </div>
         <div class="form-group">
-        <input type="submit" class="btn btn-primary" value="Submit">
+        <input type="submit" class="btn btn-primary" name="register" value="Submit">
         <input type="reset" class="btn btn-default" value="Reset">
         </div>
         <p>Already have an account?<a href="login.php">Login here</a>.</p>
