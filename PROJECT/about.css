@@ -1,0 +1,208 @@
+body {
+	background-color:#F2F6F6;
+}
+#banner {
+	background-color:white;
+	width:100%;
+	height:350px;
+}
+.header {
+	background-image: url('OIPTEHV659O.jpg');
+	background-color:white;
+	background-repeat:no-repeat;
+	text-align:center;
+	height:190px;
+	background-position:center;
+	font-family:chiller;
+}
+.row:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+.column {
+    float: left;
+    width: 33.33%;
+    padding: 15px;
+}
+.topnav {
+    overflow: hidden;
+    background-color: #333;
+}
+.topnav a {
+    float: left;
+    display: block;
+    color: #f2f2f2;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+.topnav a:hover {
+    background-color: #ddd;
+    color: black;
+}
+.eleven {
+	width:91.5%;
+	float:left;
+	margin-left:2%;
+}
+.ten {
+	width:83%;
+	float:left;
+	margin-left:2%;
+}
+.nine {
+	width:74.5%;
+	float:left;
+	margin-left:2%;
+}
+.eight {
+	width:66%;
+	float:left;
+	margin-left:2%;
+}
+.seven {
+	width:57.5%;
+	float:left;
+	margin-left:2%;
+}
+.six {
+	width:49%;
+	float:left;
+	margin-left:2%;
+}
+.five {
+	width:40.5%;
+	float:left;
+	margin-left:2%;
+}
+.four {
+	width:32%;
+	float:left;
+	margin-left:2%;
+}
+.three {
+	width:23.5%;
+	float:left;
+	margin-left:2%;
+}
+.two {
+	width:15%;
+	float:left;
+	margin-left:2%;
+}
+.one {
+	width:6.5%;
+	float:left;
+	margin-left:2%;
+}
+.row {
+	width:100%;
+	clear:both;
+	padding:0px;
+	margin:0px;
+}
+header {
+	height:100px;
+	background-color:white;
+}
+.container {
+	width:100%;
+	margin-right:auto;
+	margin-left:auto;
+}
+.hero-image {
+	height:510px;
+	background-image:url('R33b3be04bec60cf59520b4541941b847.png');
+	background-repeat:no-repeat;
+	background-position:center;
+}
+.row3 .six, .row3 .three {
+	height:333px;
+}
+.row4 .six, .row4 .three {
+	height:333px;
+}
+.row5 .six, .row5 .three {
+	height:333px;
+}
+.row6 .six, .row6 .three {
+	height:333px;
+}
+.last {
+	height:100px;
+	background-color:#383c40;
+}
+footer {
+	height:443px;
+	background-color:grey;
+}
+.seven:first-child,.eight:first-child, .nine:first-child, .ten:first-child, .eleven:first-child, .five:first-child, .four:first-child, .three:first-child, .two:first-child, .one:first-child, .six:first-child {
+	margin-left:0;
+}
+.row3 .left{
+	background:url('R33b3be04bec60cf59520b4541941b847.png')no-repeat center center;
+		background-size:cover;
+}
+.row3 .right {
+	background:url('istockphoto-180712113-1024x1024.jpg') no-repeat center center;
+	background-size:cover;
+}
+.row3 .middle{
+	background-color:white;
+}
+ul li a{
+	text-decoration:none;
+	color:grey;
+	display:block;
+}
+ul {
+	margin: 0px;
+	padding:0px;
+	list-style:none;
+}
+ul li a:hover{
+	background-color:purple;
+}
+.row4 .left{
+	background:url('istockphoto-576926086-612x612.jpg') no-repeat center center;
+	background-size:cover;
+}
+.row4 .right {
+	background:url('R4c691c9545820b3fb65223619a88c820.jpg') no-repeat center center;
+	background-size:cover;
+}
+.row4 .middle{
+	background:url('OIPTEHV659O.jpg')no-repeat center center;
+		background-size:cover;
+}
+.row5 .middle1{
+	background:url('Rf644c62c55ad88b976f62f21e5c36bfc.jpg') no-repeat center center;
+	background-size:cover;
+}
+.row5 .left{
+	background:url('Certified-aluminum-auto-body-repairs-Leons-Auto-Body.jpg') no-repeat center center;
+	background-size:cover;
+}
+.row5 .right {
+	background-color:rgb(158, 193, 221);
+}
+.row5 .middle2{
+	background:url('R24125b1574eb79d7893c51c83eccf639.jpg')no-repeat center center;
+		background-size:cover;
+}
+.row6 .left{
+	background:url('OIPTEHV659O.jpg')no-repeat center center;
+		background-size:cover;
+}
+.row6 .right {
+	background:url('R76a05e71d96116b627c6658dfb8e51cb.jpg') no-repeat center center;
+	background-size:cover;
+}
+.row6 .middle{
+	background:url('CarRepairs.jpg') no-repeat center center;
+	background-size:cover;
+}
+.row3, .row4, .row5, .row6 {
+	padding-top:30px;
+}
